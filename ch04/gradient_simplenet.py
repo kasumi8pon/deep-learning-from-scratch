@@ -28,7 +28,7 @@ t = np.array([0, 0, 1]) # 正解ラベル 3つの分類問題
 net.loss(x, t)
 
 def f(W):
-  return net.loss(x, t)
+    return net.loss(x, t)
 
 dW = numerical_gradient(f, net.W)
 print(dW)
