@@ -8,38 +8,31 @@ from two_layer_net import TwoLayerNet
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
 
 # ハイパーパラメーター
-iters_num = 100
+iters_num = 10000
 train_size = x_train.shape[0]
 batch_size = 100
-learning_rate = 1
+learning_rate = 0.1
 
 train_loss_list = []
 train_acc_list = []
 test_acc_list = []
-iter_per_epoch = 1
+iter_per_epoch = max(train_size / batch_size, 1)
 
 network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10)
 
 for i in range(iters_num):
-    print(i)
-
     # ミニバッチの取得
     batch_mask = np.random.choice(train_size, batch_size)
     x_batch = x_train[batch_mask]
     t_batch = t_train[batch_mask]
 
-    print('grad')
-
     # 勾配の計算
-    grad = network.numerical_gradient(x_batch, t_batch)
-
-    print('param')
+    # grad = network.numerical_gradient(x_batch, t_batch)
+    grad = network.gradient(x_batch, t_batch)
 
     # パラメーターの更新
     for key in ('W1', 'b1', 'W2', 'b2'):
         network.params[key] -= learning_rate * grad[key]
-
-    print('append loss')
 
     # 学習経過の記録
     loss = network.loss(x_batch, t_batch)
