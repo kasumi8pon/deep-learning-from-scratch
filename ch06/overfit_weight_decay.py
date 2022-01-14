@@ -1,4 +1,3 @@
-from lib2to3.pgen2 import grammar
 import os
 import sys
 sys.path.append(os.pardir)
@@ -14,7 +13,10 @@ from common.optimizer import SGD
 x_train = x_train[:300]
 t_train = t_train[:300]
 
-network = MultiLayerNet(input_size=784, hidden_size_list=[100, 100, 100, 100, 100, 100], output_size=10)
+# 大きな重みを持つことを防ぐため、Weigh Decay で重みの二乗ノルムを損失関数に加える
+network = MultiLayerNet(
+    input_size=784, hidden_size_list=[100, 100, 100, 100, 100, 100], output_size=10, weight_decay_lambda=0.1
+)
 optimizer = SGD(lr=0.01)
 max_epochs = 201
 train_size = x_train.shape[0]
